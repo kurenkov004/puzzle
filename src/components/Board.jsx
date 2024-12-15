@@ -1,37 +1,37 @@
 import React from 'react'
-import Square from './Square'
-import Knight from './Knight'
+import {BoardSquare} from './BoardSquare'
+import {Piece} from './Piece'
+import { useEffect, useState } from 'react'
 
-function renderSquare(i, [knightX, knightY]) {
-  const x = i % 8
-  const y = Math.floor(i / 8)
-  const isKnightHere = x === knightX && y === knightY
-  const black = (x + y) % 2 === 1
-  const piece = isKnightHere ? <Knight /> : null
-
-  return (
-    <div key={i} style={{ width: '12.5%', height: '12.5%' }}>
-      <Square black={black}>{piece}</Square>
-    </div>
-  )
+const boardStyle = {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexWrap: 'wrap',
 }
 
-export default function Board({ knightPosition }) {
-  const squares = []
-  for (let i = 0; i < 64; i++) {
-    squares.push(renderSquare(i, knightPosition))
+const squareStyle = { width: '12.5%', height: '12.5%' }
+
+
+
+export const Board = ({ game }) => {
+  const [[knightX, knightY], setKnightPos] = useState(game.knightPosition)
+  useEffect(() => game.observe(setKnightPos))
+  function renderSquare(i) {
+    const x = i % 8
+    const y = Math.floor(i / 8)
+    return (
+      <div key={i} style={squareStyle}>
+        <BoardSquare x={x} y={y} game={game}>
+          <Piece isKnight={x === knightX && y === knightY} />
+        </BoardSquare>
+      </div>
+    )
   }
-
-  return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexWrap: 'wrap'
-      }}
-    >
-      {squares}
-    </div>
-  )
+  const squares = []
+  for (let i = 0; i < 64; i += 1) {
+    squares.push(renderSquare(i))
+  }
+  return <div style={boardStyle}>{squares}</div>
 }
+

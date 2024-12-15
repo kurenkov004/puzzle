@@ -1,16 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import Board from './components/Board';
-import {observe} from './components/Game';
+import Example from './example'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import {ReactDOM, createRoot} from 'react-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-observe((knightPosition) => root.render(
 
-    <Board knightPosition={knightPosition} />
+const App = () => {
+    return (
+        <div className="App">
+            <DndProvider backend={HTML5Backend}>
+                <Example />
+            </DndProvider>
+        </div>
+    )
+}
 
-));
-
-
-
+root.render(<App/>)

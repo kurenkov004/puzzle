@@ -15,3 +15,7 @@ code {
 body {
   background-color:gray;
 }
+.board-container {
+  height: 900px;
+  width: 900px;
+}
